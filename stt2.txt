@@ -16,7 +16,7 @@ setGeom(cylinder(diam,h))
 // set up free layer
 Msat  = 1430e3
 Aex   = 1.54e-11
-alpha = 1 //0.02
+alpha = 0.02 //0.02
 //m     = uniform(0.1, 0.3, 0.95)
 m     = uniform(0.1, 0.95, 0.3)
 
@@ -43,11 +43,13 @@ anisU = vector(0, 0, 1)
 //Jtot := -0.008            // total current in A
 //area := sizeX*sizeY*pi/4
 //jc   := Jtot / area       // current density in A/m2
-jc := 2.0e12
+jc := 0.3e12
 J = vector(0, 0, -jc)
 
 // schedule output & run
 //autosave(m, 10e-10)
-tableautosave(5e-11)
+//autosave(m, 100e-9)
+tableautosave(1e-10)
+//run(300e-9)
 run(100e-9)
 save(m)

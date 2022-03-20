@@ -4,6 +4,7 @@ python3 fourier.py stt1.out/table.txt
 
 """
 
+import os
 import sys
 import numpy as np
 import pandas as pd
@@ -27,22 +28,13 @@ def fourier(T, signal):
     yf = fft(signal)
     yf = np.abs(yf) / N
 
-    maxind = np.argmax(yf)
-    print("Peak f = {:.4f} GHz".format(abs(xf[maxind])))
-
     #plt.plot(T, signal)
     #xf = xf[:N//2]
     #yf = yf[:N//2]
-    #print(xf)
-    #print(yf)
-    plt.plot(xf, yf)
-    # Here we go:
-    plt.xlim(-0.3, 0.3)
-    plt.ylim(-1, 1)
-    plt.show()
+    return xf, yf
 
 
-def process_file(data_path):
+def process_file(data_path, outdir):
 
     df = pd.read_csv(data_path, sep="\t")
     df.columns=['t','mx','my','mz']
@@ -53,11 +45,28 @@ def process_file(data_path):
     plt.plot(T, signal)
     #plt.xlim(-0.3, 0.3)
     #plt.ylim(-1, 1)
+    plt.savefig(os.path.join(outdir, 'signal.png'))
     plt.show()
 
-    fourier(T, signal)
+    xf, yf = fourier(T, signal)
+    maxind = np.argmax(yf)
+    peak = abs(xf[maxind])
+    print("Peak f = {:.6f} GHz".format(peak))
 
+    #print(xf)
+    print("len(yf):", len(yf))
+    plt.plot(xf, yf)
+    # Here we go:
+    #plt.xlim(-0.3, 0.3)
+    #plt.xlim(-1, 1)
+    #plt.ylim(0, 1)
+    plt.xlim(0, 1)
+    plt.ylim(0, 0.5)
+    plt.savefig(os.path.join(outdir, 'spectrum.png'))
+    plt.show()
 
+    with open(os.path.join(outdir, 'result.txt'), "wt") as fp:
+        fp.write("{:.6f} GHz\n".format(peak))
 
 if __name__ == "__main__":
 
@@ -66,6 +75,6 @@ if __name__ == "__main__":
     else:
         data_path = "stt2.out/table.txt"
 
-    process_file(data_path)
+    process_file(data_path, outdir="stt2.out")
 
 

@@ -1,0 +1,39 @@
+//mumax 3.10 [linux_amd64 go1.14(gc) CUDA-10.1]
+//GPU info: GeForce 920M(2004MB), CUDA Driver 10.1, cc=3.5, using cc=35 PTX
+//(c) Arne Vansteenkiste, Dynamat LAB, Ghent University, Belgium
+//This is free software without any warranty. See license.txt
+//********************************************************************//
+//  If you use mumax in any work or publication,                      //
+//  we kindly ask you to cite the references in references.bib        //
+//********************************************************************//
+//output directory: stt2.out/
+sizeX := 20e-9
+sizeY := 20e-9
+sizeZ := 5e-9
+Nx := 10
+Ny := 10
+Nz := 2
+diam := 20e-9
+h := 5e-9
+setgridsize(Nx, Ny, Nz)
+setcellsize(sizeX/Nx, sizeY/Ny, sizeZ/Nz)
+setGeom(cylinder(diam, h))
+Msat = 1430e3
+Aex = 1.54e-11
+alpha = 1
+m = uniform(0.1, 0.95, 0.3)
+lambda = 0.2
+Pol = 0.37
+epsilonprime = 0
+fixedlayer = vector(0, 0, 1)
+Ku1 = 5.2e5
+anisU = vector(0, 0, 1)
+jc := 0.57e12
+J = vector(0, 0, -jc)
+tableautosave(5e-11)
+run(100e-9)
+//********************************************************************//
+//Please cite the following references, relevant for your simulation. //
+//See bibtex file in output folder for justification.                 //
+//********************************************************************//
+//   * Vansteenkiste et al., AIP Adv. 4, 107133 (2014).
